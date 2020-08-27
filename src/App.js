@@ -1,24 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useSelector, useDispatch } from 'react-redux'
+import { startGetUsers, createUsers } from './redux/reducers/users.actions'
+import { getPost } from './redux/reducers/posts.actions'
 
 function App() {
+  const dispatch = useDispatch();
+  const users = useSelector(store => store.users.users)
+  const posts = useSelector(store => store.posts.posts)
+
+  const handleClick = (e) => {
+    dispatch(startGetUsers('dieguito'))
+  }
+
+  const handlePostClick = (e) => {
+    dispatch(getPost('obtener post'))
+  }
+
+  const newUser = {
+                    id: 5000,
+                    name: 'Nuevo creado por diego',
+                    username: 'Triviño',
+                    email: 'prueba@gmail.com',
+                }
+
+ const handleCreateClick = (e) => {
+    dispatch(createUsers(newUser))
+ }                
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     <button onClick={handleClick}>Get users</button>
+      <ul>
+        {
+          users.map(item => <li key={item.id}>{item.name}</li>)
+        }
+      </ul>
+      <button onClick={handlePostClick}>Get post</button>
+      <ul>
+        {
+          posts.map(item => <li key={item.id}>{item.title}</li>)
+        }
+      </ul>
+      <button onClick={handleCreateClick}>Create user</button>
     </div>
   );
 }
